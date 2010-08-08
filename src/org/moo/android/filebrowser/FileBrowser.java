@@ -30,9 +30,7 @@ package org.moo.android.filebrowser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
-import org.moo.android.filebrowser.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
