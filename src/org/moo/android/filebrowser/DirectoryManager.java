@@ -32,6 +32,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.util.Log;
+
 /**
  * This class returns all dirs and files from a directory filtered, and sorted
  * aphabeticaly
@@ -42,7 +44,7 @@ import java.util.Arrays;
 public class DirectoryManager {
 
 	protected boolean showHidden = false;
-	
+
 	public boolean isShowHidden() {
 		return showHidden;
 	}
@@ -80,7 +82,8 @@ public class DirectoryManager {
 		File[] files;
 
 		if (mFilters != null)
-			files = directory.listFiles(new FileFilter(mFilters, this.showHidden));
+			files = directory.listFiles(new FileFilter(mFilters,
+					this.showHidden));
 		else
 			files = directory.listFiles(new FileFilter(this.showHidden));
 
@@ -120,5 +123,15 @@ public class DirectoryManager {
 			result.add(file);
 		}
 		return result;
+	}
+
+	public void createDirectory(File parent, String name) {
+		Log.i("FileBrowser", "Creating " + parent.getAbsoluteFile() + "/"
+				+ name);
+		File newDir = new File(parent.getAbsoluteFile() + "/" + name);
+		if (!newDir.exists()) {
+			boolean result = newDir.mkdir();
+			Log.i("FileBrowser", ""+result);
+		}
 	}
 }

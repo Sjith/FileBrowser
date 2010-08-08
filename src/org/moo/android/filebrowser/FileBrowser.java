@@ -386,6 +386,8 @@ public class FileBrowser extends Activity implements
 		@Override
 		public void ready(String dirname) {
 			Log.w("FileBrowser", dirname);
+			dirManager.createDirectory(mCurrentDir, dirname);
+			browseTo(mCurrentDir);
 
 		}
 	}
