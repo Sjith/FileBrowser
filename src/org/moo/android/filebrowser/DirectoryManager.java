@@ -41,6 +41,16 @@ import java.util.Arrays;
  */
 public class DirectoryManager {
 
+	protected boolean showHidden = false;
+	
+	public boolean isShowHidden() {
+		return showHidden;
+	}
+
+	public void setShowHidden(boolean showHidden) {
+		this.showHidden = showHidden;
+	}
+
 	/**
 	 * Returns all dirs and files from a directory sorted by natural order and
 	 * dirs first.
@@ -66,13 +76,13 @@ public class DirectoryManager {
 	 */
 	public ArrayList<File> getDirectoryListing(File directory, String[] mFilters) {
 
-		File[] dirs = directory.listFiles(new DirFilter());
+		File[] dirs = directory.listFiles(new DirFilter(this.showHidden));
 		File[] files;
 
 		if (mFilters != null)
-			files = directory.listFiles(new FileFilter(mFilters));
+			files = directory.listFiles(new FileFilter(mFilters, this.showHidden));
 		else
-			files = directory.listFiles(new FileFilter());
+			files = directory.listFiles(new FileFilter(this.showHidden));
 
 		// Used for calculation the precise ArrayList lenght. Saves performance.
 		int dirEntries = 0;

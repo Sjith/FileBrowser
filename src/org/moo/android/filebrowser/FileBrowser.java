@@ -37,6 +37,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -47,6 +48,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class FileBrowser extends Activity implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
@@ -65,14 +67,16 @@ public class FileBrowser extends Activity implements
 	private String[] mGeoPosExt;
 	private DirectoryManager dirManager;
 	private boolean mStandAlone;
+	private boolean showHidden;
 	private IconView mLastSelected;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		dirManager = new DirectoryManager();
+		this.showHidden = PreferenceManager.getDefaultSharedPreferences(this)
+				.getBoolean("show_hidden", false);
 
 		mAudioExt = getResources().getStringArray(R.array.fileEndingAudio);
 		mImageExt = getResources().getStringArray(R.array.fileEndingImage);
@@ -110,14 +114,28 @@ public class FileBrowser extends Activity implements
 		setContentView(mGrid);
 	}
 
+	public void onResume() {
+		super.onResume();
+		Log.i("FileBrowser", "onResume()");
+		this.showHidden = PreferenceManager.getDefaultSharedPreferences(this)
+				.getBoolean("show_hidden", false);
+		if (mCurrentDir == null)
+			browseTo(new File("/sdcard"));
+		else
+			browseTo(mCurrentDir);
+
+	}
+
 	private synchronized void browseTo(final File location) {
 		Log.i("FileBrowser", location.getAbsolutePath());
+		Log.i("FileBrowser", ""+showHidden);
 		mCurrentDir = location;
 
 		this.setTitle(mCurrentDir.getName().compareTo("") == 0 ? mCurrentDir
 				.getPath() : mCurrentDir.getName());
 
-		mFiles = new DirectoryManager().getDirectoryListing(location, mFilters);
+		dirManager.setShowHidden(showHidden);
+		mFiles = dirManager.getDirectoryListing(location, mFilters);
 
 		if (mGrid != null)
 			mGrid.setAdapter(new IconAdapter());
@@ -349,6 +367,7 @@ public class FileBrowser extends Activity implements
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.preferences:
+			startActivityIfNeeded(new Intent(this, Preferences.class), -1);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -38,6 +38,11 @@ import java.io.File;
 public class FileFilter implements java.io.FileFilter {
 
 	protected String[] mFilters = null;
+	
+	protected boolean showHidden = false;
+
+	
+
 
 	/**
 	 * Sets the string file filters to use
@@ -48,10 +53,19 @@ public class FileFilter implements java.io.FileFilter {
 	public FileFilter(String[] mFilters) {
 		this.mFilters = mFilters;
 	}
-
+	public FileFilter(String[] mFilters, boolean showHidden) {
+		this.mFilters = mFilters;
+		this.showHidden = showHidden;
+	}
+	
+	public FileFilter(boolean showHidden) {
+		this.showHidden = showHidden;
+	}
+	
 	public FileFilter() {
 	}
 
+	
 	/**
 	 * Returns true if the given File object is an actual file. If file filters
 	 * are set in the constructor, files are filtered by them
@@ -62,6 +76,9 @@ public class FileFilter implements java.io.FileFilter {
 	public boolean accept(File pathname) {
 		if (pathname.isDirectory())
 			return false;
+		if (!showHidden && pathname.getName().startsWith("."))
+			return false;
+		
 		if (mFilters != null) {
 			for (String ext : mFilters) {
 				if (pathname.getName().endsWith(ext)) {

@@ -35,9 +35,18 @@ import java.io.FileFilter;
  * Filters all File instances for directories
  * 
  * @author Bahtiar `kalkin-` Gadimov
- *
+ * 
  */
 public class DirFilter implements FileFilter {
+
+	protected boolean showHidden = false;
+
+	public DirFilter(boolean showHidden) {
+		this.showHidden = showHidden;
+	}
+
+	public DirFilter() {
+	}
 
 	/**
 	 * Returns only true if given File is a directory
@@ -46,7 +55,11 @@ public class DirFilter implements FileFilter {
 	 */
 	@Override
 	public boolean accept(File pathname) {
-		return pathname.isDirectory();
+		if (!pathname.isDirectory())
+			return false;
+		if (!showHidden && pathname.getName().startsWith("."))
+				return false;
+		return true;
 	}
 
 }
