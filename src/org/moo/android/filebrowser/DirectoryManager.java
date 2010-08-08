@@ -41,7 +41,7 @@ import java.util.Arrays;
  */
 public class DirectoryManager {
 
-	public ArrayList getDirectoryListing(File directory, String[] mFilters) {
+	public ArrayList<File> getDirectoryListing(File directory, String[] mFilters) {
 
 		File[] dirs = directory.listFiles(new DirFilter());
 		File[] files;
