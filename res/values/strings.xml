@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="preferences">Preferences</string>
     <string name="app_name">FileBrowser</string>
     <string-array name="file_options">
 		<!--item>Rename</item--> 
