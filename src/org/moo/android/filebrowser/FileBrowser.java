@@ -60,6 +60,7 @@ public class FileBrowser extends Activity implements
 	private String[] mTextExt;
 	private String[] mVideoExt;
 	private String[] mGeoPosExt;
+	private DirectoryManager dirManager;
 	private boolean mStandAlone;
 	private IconView mLastSelected;
 
@@ -68,7 +69,7 @@ public class FileBrowser extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mFiles = new ArrayList<File>();
+		dirManager = new DirectoryManager();
 
 		mAudioExt = getResources().getStringArray(R.array.fileEndingAudio);
 		mImageExt = getResources().getStringArray(R.array.fileEndingImage);
@@ -109,8 +110,6 @@ public class FileBrowser extends Activity implements
 	private synchronized void browseTo(final File location) {
 		Log.i("FileBrowser", location.getAbsolutePath());
 		mCurrentDir = location;
-
-		mFiles.clear();
 
 		this.setTitle(mCurrentDir.getName().compareTo("") == 0 ? mCurrentDir
 				.getPath() : mCurrentDir.getName());
