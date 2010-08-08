@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -48,7 +49,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class FileBrowser extends Activity implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
@@ -126,9 +126,13 @@ public class FileBrowser extends Activity implements
 
 	}
 
+	protected Dialog onCreateDialog(int dialogID) {
+		return new CreateFolderDialog(this, new OnReadyListener());
+	}
+
 	private synchronized void browseTo(final File location) {
 		Log.i("FileBrowser", location.getAbsolutePath());
-		Log.i("FileBrowser", ""+showHidden);
+		Log.i("FileBrowser", "" + showHidden);
 		mCurrentDir = location;
 
 		this.setTitle(mCurrentDir.getName().compareTo("") == 0 ? mCurrentDir
@@ -369,8 +373,20 @@ public class FileBrowser extends Activity implements
 		case R.id.preferences:
 			startActivityIfNeeded(new Intent(this, Preferences.class), -1);
 			return true;
+		case R.id.folder_add:
+			Log.e("FileBrowser", "R.id.folder_add");
+			showDialog(1);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private class OnReadyListener implements CreateFolderDialog.ReadyListener {
+		@Override
+		public void ready(String dirname) {
+			Log.w("FileBrowser", dirname);
+
 		}
 	}
 
