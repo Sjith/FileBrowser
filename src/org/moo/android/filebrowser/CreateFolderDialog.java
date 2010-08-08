@@ -47,6 +47,7 @@ public CreateFolderDialog(Context context) {
 			EditText input = (EditText) findViewById(R.id.new_folder_name);
 			readyListener.ready(input.getText().toString());
 			CreateFolderDialog.this.dismiss();
+			input.setText("");
 		}
 	}
 	
