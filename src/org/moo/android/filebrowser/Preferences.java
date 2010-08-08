@@ -1,9 +1,9 @@
 package org.moo.android.filebrowser;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
-public class Preferences extends Activity {
+public class Preferences extends PreferenceActivity {
 
 	public Preferences() {
 		// TODO Auto-generated constructor stub
@@ -13,7 +13,7 @@ public class Preferences extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	
+	    this.addPreferencesFromResource(R.xml.preferences);
 	    // TODO Auto-generated method stub
 	}
 
