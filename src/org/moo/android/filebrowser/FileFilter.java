@@ -1,4 +1,5 @@
 package org.moo.android.filebrowser;
+
 /*
  * Copyright (c) 2009, Bahtiar `kalkin-` Gadimov
  * All rights reserved.
@@ -32,26 +33,32 @@ import java.io.File;
  * Filters all Filter instances which are actual files
  * 
  * @author Bahtiar `kalkin-` Gadimov
- *
+ * 
  */
 public class FileFilter implements java.io.FileFilter {
 
 	protected String[] mFilters = null;
-	
-	public FileFilter(String[] mFilters)
-	{
+
+	/**
+	 * Sets the string file filters to use
+	 * 
+	 * @param mFilters
+	 *            string file filters
+	 */
+	public FileFilter(String[] mFilters) {
 		this.mFilters = mFilters;
 	}
-	
-	public FileFilter(){}
-	
-	/** 
-	 * Returns true if the given File object is an actual file
+
+	public FileFilter() {
+	}
+
+	/**
+	 * Returns true if the given File object is an actual file. If file filters
+	 * are set in the constructor, files are filtered by them
 	 * 
 	 * @see java.io.FileFilter#accept(java.io.File)
 	 */
 	@Override
-
 	public boolean accept(File pathname) {
 		if (pathname.isDirectory())
 			return false;
@@ -64,7 +71,7 @@ public class FileFilter implements java.io.FileFilter {
 		} else {
 			return true;
 		}
-		
+
 		return false;
 	}
 
