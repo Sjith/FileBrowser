@@ -41,21 +41,54 @@ import java.util.Arrays;
  */
 public class DirectoryManager {
 
+	/**
+	 * Returns all dirs and files from a directory sorted by natural order and
+	 * dirs first.
+	 * 
+	 * @param directory
+	 *            The directory to display content from
+	 * @return {@link ArrayList}<Files>
+	 */
+	public ArrayList<File> getDirectoryListing(File directory) {
+		return this.getDirectoryListing(directory, null);
+	}
+
+	/**
+	 * Returns all dirs and files from a directory sorted by natural order and
+	 * dirs first. Further more string file filter may be aplied by mFilters
+	 * parameter.
+	 * 
+	 * @param directory
+	 *            The directory to display content from
+	 * @param mFilters
+	 *            File filters
+	 * @return {@link ArrayList}<Files>
+	 */
 	public ArrayList<File> getDirectoryListing(File directory, String[] mFilters) {
 
 		File[] dirs = directory.listFiles(new DirFilter());
 		File[] files;
+
 		if (mFilters != null)
 			files = directory.listFiles(new FileFilter(mFilters));
 		else
 			files = directory.listFiles(new FileFilter());
 
+		// Used for calculation the precise ArrayList lenght. Saves performance.
 		int dirEntries = 0;
+
 		if (directory.getParentFile() != null)
 			dirEntries = 1;
 
-		if (dirs == null && files == null)
-			return new ArrayList<File>(1);
+		if (dirs == null && files == null) {
+			if (directory.getParentFile() != null) {
+				ArrayList<File> result = new ArrayList<File>(1);
+				result.add(directory.getParentFile());
+				return result;
+			} else {
+				return new ArrayList<File>(0);
+			}
+		}
 		if (dirs != null) {
 			Arrays.sort(dirs);
 			dirEntries += dirs.length;
