@@ -29,6 +29,11 @@ package org.moo.android.filebrowser;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,6 +49,17 @@ import android.util.Log;
 public class DirectoryManager {
 
 	protected boolean showHidden = false;
+
+	protected enum FileOperations {
+		move, copy
+	};
+
+	protected FileOperations fileOperation;
+
+	/**
+	 * Contains a file which should be moved or copied
+	 */
+	protected File tmpFile = null;
 
 	public boolean isShowHidden() {
 		return showHidden;
@@ -131,7 +147,74 @@ public class DirectoryManager {
 		File newDir = new File(parent.getAbsoluteFile() + "/" + name);
 		if (!newDir.exists()) {
 			boolean result = newDir.mkdir();
-			Log.i("FileBrowser", ""+result);
+			Log.i("FileBrowser", "" + result);
 		}
+	}
+
+	public void moveFile(File file) {
+		Log.i("FileBrowser", "Moving file in moveFile() " + file.getName());
+		this.tmpFile = file;
+		this.fileOperation = FileOperations.move;
+	}
+
+	public void copyFile(File file) {
+		Log.i("FileBrowser", "Copying file in copyFile() " + file.getName());
+		tmpFile = file;
+		fileOperation = FileOperations.copy;
+	}
+
+	public void paste(File targetDir) throws IOException {
+
+		if (tmpFile == null || fileOperation == null)
+			return;
+
+		switch (fileOperation) {
+		case copy:
+			Log.i("FileBrowser", "Copying file " + tmpFile.getName());
+			createDirectory(targetDir, tmpFile.getName());
+			copy(tmpFile, targetDir);
+			return;
+		case move:
+			Log.i("FileBrowser", "Moving file " + tmpFile.getName());
+			move(targetDir, tmpFile);
+			return;
+		}
+
+		tmpFile = null;	
+
+	}
+
+	private void copy(File srcDir, File dstDir) throws IOException {
+		if (srcDir.isDirectory()) {
+
+			String[] children = srcDir.list();
+			for (int i = 0; i < children.length; i++) {
+				copy(new File(srcDir, children[i]), new File(srcDir,
+						children[i]));
+			}
+		} else {
+			// This method is implemented in Copying a File
+			copyFile(srcDir, dstDir);
+		}
+	}
+
+	private void copyFile(File src, File dst) throws IOException {
+		Log.i("FileBrowser", "copyFile src" + src);
+		Log.i("FileBrowser", "copyFile dst" + dst);
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dst);
+
+		// Transfer bytes from in to out
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
+	}
+
+	private void move(File targetDir, File fileToMove) {
+		fileToMove.renameTo(new File(targetDir, fileToMove.getName()));
 	}
 }
