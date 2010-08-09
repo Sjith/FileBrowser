@@ -1,13 +1,11 @@
 package org.moo.android.filebrowser;
 
 import android.app.Dialog;
+import org.moo.android.filebrowser.R;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -33,7 +31,7 @@ public CreateFolderDialog(Context context) {
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		requestWindowFeature(Window.FEATURE_LEFT_ICON);
-		setTitle(R.string.folder_add);
+		setTitle(R.string .folder_add);
 		setContentView(R.layout.create_folder);
 		setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, android.R.drawable.ic_menu_add);
 		Button create = (Button) findViewById(R.id.create_button);
