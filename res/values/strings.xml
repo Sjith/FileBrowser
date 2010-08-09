@@ -12,4 +12,8 @@
 	</string-array>
 	<string name="folder_add">Create Folder</string>
 	<string name="create">Create</string>
+	<string name="copy">Copy</string>
+	<string name="delete">Delete</string>
+	<string name="move">Move</string>
+	<string name="paste">Paste</string>
 </resources>
