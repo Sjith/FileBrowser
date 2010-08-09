@@ -29,6 +29,7 @@ package org.moo.android.filebrowser;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -119,7 +120,6 @@ public class FileBrowser extends Activity implements
 
 	public void onResume() {
 		super.onResume();
-		Log.i("FileBrowser", "onResume()");
 		this.showHidden = PreferenceManager.getDefaultSharedPreferences(this)
 				.getBoolean("show_hidden", false);
 		if (mCurrentDir == null)
@@ -134,8 +134,6 @@ public class FileBrowser extends Activity implements
 	}
 
 	private synchronized void browseTo(final File location) {
-		Log.i("FileBrowser", location.getAbsolutePath());
-		Log.i("FileBrowser", "" + showHidden);
 		mCurrentDir = location;
 
 		this.setTitle(mCurrentDir.getName().compareTo("") == 0 ? mCurrentDir
@@ -335,7 +333,7 @@ public class FileBrowser extends Activity implements
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		 menu.setHeaderTitle(((IconView) info.targetView).getFileName());
+		menu.setHeaderTitle(((IconView) info.targetView).getFileName());
 		inflater.inflate(R.menu.context_menu, menu);
 	}
 
@@ -350,6 +348,10 @@ public class FileBrowser extends Activity implements
 			new File(mCurrentDir.getAbsoluteFile() + "/" + child).delete();
 			browseTo(mCurrentDir);
 			return true;
+		case R.id.move:
+			dirManager.moveFile(new File(mCurrentDir, child));
+		case R.id.copy:
+			dirManager.copyFile(new File(mCurrentDir, child));
 		default:
 			return true;
 		}
@@ -363,9 +365,16 @@ public class FileBrowser extends Activity implements
 			startActivityIfNeeded(new Intent(this, Preferences.class), -1);
 			return true;
 		case R.id.folder_add:
-			Log.e("FileBrowser", "R.id.folder_add");
 			showDialog(1);
 			return true;
+		case R.id.paste:
+			try {
+				dirManager.paste(mCurrentDir);
+			} catch (IOException e) {
+				Log.e("FileBrowser", e.getMessage());
+				e.printStackTrace();
+			}
+			browseTo(mCurrentDir);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -374,7 +383,6 @@ public class FileBrowser extends Activity implements
 	private class OnReadyListener implements CreateFolderDialog.ReadyListener {
 		@Override
 		public void ready(String dirname) {
-			Log.w("FileBrowser", dirname);
 			dirManager.createDirectory(mCurrentDir, dirname);
 			browseTo(mCurrentDir);
 
