@@ -345,7 +345,7 @@ public class FileBrowser extends Activity implements
 		String child = ((IconView) info.targetView).getFileName();
 		switch (item.getItemId()) {
 		case R.id.delete_dir:
-			new File(mCurrentDir.getAbsoluteFile() + "/" + child).delete();
+			dirManager.delete(new File(mCurrentDir, child));
 			browseTo(mCurrentDir);
 			return true;
 		case R.id.move:

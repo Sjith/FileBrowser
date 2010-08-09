@@ -217,4 +217,23 @@ public class DirectoryManager {
 	private void move(File targetDir, File fileToMove) {
 		fileToMove.renameTo(new File(targetDir, fileToMove.getName()));
 	}
+
+
+	public void delete(File file) {
+		if (!file.isDirectory())
+		{
+			file.delete();
+			return;
+		} else {
+			File[] children = file.listFiles();
+			if (children != null )
+			{
+				for (int i = 0; i < children.length; i++) {
+					delete(children[i]);
+				}
+				
+			}
+		}
+		file.delete();
+	}
 }
