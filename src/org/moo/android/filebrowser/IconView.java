@@ -37,8 +37,8 @@ import android.widget.TextView;
 
 public class IconView extends LinearLayout
 {
-	private ImageView mIcon;
-	private TextView mFileName;
+	protected ImageView mIcon;
+	protected TextView mFileName;
 
 	public IconView(Context context, int iconResId, String fileName)
 	{
@@ -78,5 +78,10 @@ public class IconView extends LinearLayout
 	public void setFileName(String fileName)
 	{
 		mFileName.setText(fileName);
+	}
+
+	public String getFileName()
+	{
+		return mFileName.getText().toString();
 	}
 }
