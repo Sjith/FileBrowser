@@ -1,0 +1,25 @@
+FileBrowser
+===========
+:Author:    Bahtiar `kalkin-` Gadimov, 
+:Email:     bahtiar@gadimov.de
+:Date:      2010-08-09 
+
+
+About
+-----
+FileBrowser is an application for Android. It's based on Moo Production
+FileBrowser ( http://code.google.com/p/filebrowserandroid/ ) licensde under BSD
+License. Some Parts of Moo Production FileBrowser were rewritten, some were
+addded. All my contribution to FileBrowser is also licensed under BSD License.
+It could be possible that my patches would be merged with Moo Productions
+code, but i have yet no response from them (mailed few days ago). Because i
+needed some place on the net were  i can store it, it's previosly saved here on
+github.
+
+
+Features
+--------
+- You can hide and show files with . prefix (hidden files on *nix)
+- Copy/Paste/Move/Delete works
+- You can create folders
+- Removed Bug which killed app on openning an empty folder
