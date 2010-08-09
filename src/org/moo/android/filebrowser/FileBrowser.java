@@ -349,9 +349,12 @@ public class FileBrowser extends Activity implements
 			browseTo(mCurrentDir);
 			return true;
 		case R.id.move:
+			Log.i("FileBrowser", "move");
 			dirManager.moveFile(new File(mCurrentDir, child));
+			return true;
 		case R.id.copy:
 			dirManager.copyFile(new File(mCurrentDir, child));
+			return true;
 		default:
 			return true;
 		}
