@@ -32,27 +32,29 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class FileBrowser extends Activity implements
-		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
-		AdapterView.OnItemSelectedListener {
+		AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	private GridView mGrid;
 	private File mCurrentDir;
@@ -105,9 +107,10 @@ public class FileBrowser extends Activity implements
 		Display display = getWindowManager().getDefaultDisplay();
 
 		mGrid = new GridView(this);
+		registerForContextMenu(mGrid);
 		mGrid.setNumColumns(display.getWidth() / 60);
 		mGrid.setOnItemClickListener(this);
-		mGrid.setOnItemLongClickListener(this);
+		// mGrid.setOnItemLongClickListener(this);
 		mGrid.setOnItemSelectedListener(this);
 		mGrid.setAdapter(new IconAdapter());
 
@@ -259,45 +262,6 @@ public class FileBrowser extends Activity implements
 		}
 	}
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parentView, View view,
-			int arg2, long id) {
-		final File file = mFiles.get((int) id);
-		final File parent = file.getParentFile();
-
-		new AlertDialog.Builder(FileBrowser.this).setIcon(
-				android.R.drawable.ic_menu_agenda).setItems(
-				R.array.file_options, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						switch (whichButton) {
-						// case 0: // Rename
-						// file.renameTo(new File(parent, "Bubba.txt"));
-						// browseTo(parent);
-						// break;
-						case 0: // Delete
-							file.delete();
-							browseTo(parent);
-							break;
-						// case 2: // Cut
-						// break;
-						// case 3: // Copy
-						// break;
-						case 1: // Send To...
-							Intent intent = new Intent(Intent.ACTION_SEND);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							intent.setType(getMimeType(file));
-							intent.putExtra(Intent.EXTRA_STREAM, Uri
-									.fromFile(file));
-							startActivity(Intent.createChooser(intent, null));
-							break;
-						}
-						dialog.dismiss();
-					}
-				}).create().show();
-
-		return true;
-	}
-
 	private String getMimeType(File file) {
 		for (String ext : mAudioExt) {
 			if (file.getName().endsWith(ext))
@@ -364,6 +328,31 @@ public class FileBrowser extends Activity implements
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return true;
+	}
+
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		 menu.setHeaderTitle(((IconView) info.targetView).getFileName());
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		String child = ((IconView) info.targetView).getFileName();
+		switch (item.getItemId()) {
+		case R.id.delete_dir:
+			new File(mCurrentDir.getAbsoluteFile() + "/" + child).delete();
+			browseTo(mCurrentDir);
+			return true;
+		default:
+			return true;
+		}
 	}
 
 	@Override
