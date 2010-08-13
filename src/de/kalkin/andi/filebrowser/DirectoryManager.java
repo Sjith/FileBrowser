@@ -180,7 +180,7 @@ public class DirectoryManager {
 			return;
 		}
 
-		tmpFile = null;	
+		tmpFile = null;
 
 	}
 
@@ -218,22 +218,17 @@ public class DirectoryManager {
 		fileToMove.renameTo(new File(targetDir, fileToMove.getName()));
 	}
 
-
 	public void delete(File file) {
-		if (!file.isDirectory())
-		{
-			file.delete();
-			return;
-		} else {
+		if (file.isDirectory()) {
 			File[] children = file.listFiles();
-			if (children != null )
-			{
+			if (children != null ) {
 				for (int i = 0; i < children.length; i++) {
 					delete(children[i]);
 				}
-				
+
 			}
 		}
-		file.delete();
+		Log.i("FileBrowser", "Deleting file " + file.getAbsolutePath());
+		Log.i("FileBrowser", "Deleting wass successfull? " + file.delete());
 	}
 }
