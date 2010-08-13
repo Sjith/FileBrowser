@@ -141,19 +141,19 @@ public class DirectoryManager {
 		return result;
 	}
 
-	public void createDirectory(File parent, String name) {
+	public File createDirectory(File parent, String name) {
 		File newDir = new File(parent.getAbsoluteFile(), name);
 		Log.i("FileBrowser", "Creating " + newDir.getAbsolutePath());
 		Log.i("FileBrowser", "Write rechte? " + newDir.canWrite());
 		if (!newDir.exists()) {
 			try {
-			boolean result = newDir.mkdir();
-			Log.i("FileBrowser", "" + result);
-			} catch (SecurityException e)
-			{
+				boolean result = newDir.mkdir();
+				Log.i("FileBrowser", "" + result);
+			} catch (SecurityException e) {
 				Log.w("FileBrowser", e.getMessage());
 			}
 		}
+		return newDir;
 	}
 
 	public void moveFile(File file) {
@@ -188,18 +188,18 @@ public class DirectoryManager {
 
 	}
 
-	private void copy(File srcDir, File dstDir) throws IOException {
-		if (srcDir.isDirectory()) {
+	private void copy(File src, File dst) throws IOException {
+		if (src.isDirectory()) {
+			 File newDir = createDirectory(dst, src.getName());
 
-			File[] children = srcDir.listFiles();
-			for (int i = 0; i < children.length; i++) {
-				copy(new File(srcDir, children[i].getName()), new File(srcDir,
-						children[i].getName()));
-			}
-		} else {
-			// This method is implemented in Copying a File
-			copyFile(srcDir, dstDir);
+			String[] children = src.list();
+
+			if (children != null)
+				for (String fileName : children)
+					copy(new File(src, fileName), newDir);
 		}
+		copyFile(src, dst);
+
 	}
 
 	private void copyFile(File src, File dst) throws IOException {
