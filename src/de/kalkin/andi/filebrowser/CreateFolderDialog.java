@@ -1,7 +1,6 @@
-package org.moo.android.filebrowser;
+package de.kalkin.andi.filebrowser;
 
 import android.app.Dialog;
-import org.moo.android.filebrowser.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;

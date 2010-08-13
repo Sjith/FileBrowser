@@ -1,4 +1,4 @@
-package org.moo.android.filebrowser;
+package de.kalkin.andi.filebrowser;
 
 /*
  * Copyright (c) 2009, Bahtiar `kalkin-` Gadimov
@@ -27,39 +27,69 @@ package org.moo.android.filebrowser;
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import java.io.File;
-import java.io.FileFilter;
 
 /**
- * Filters all File instances for directories
+ * Filters all Filter instances which are actual files
  * 
  * @author Bahtiar `kalkin-` Gadimov
  * 
  */
-public class DirFilter implements FileFilter {
+public class FileFilter implements java.io.FileFilter {
 
+	protected String[] mFilters = null;
+	
 	protected boolean showHidden = false;
 
-	public DirFilter(boolean showHidden) {
-		this.showHidden = showHidden;
-	}
+	
 
-	public DirFilter() {
-	}
 
 	/**
-	 * Returns only true if given File is a directory
+	 * Sets the string file filters to use
+	 * 
+	 * @param mFilters
+	 *            string file filters
+	 */
+	public FileFilter(String[] mFilters) {
+		this.mFilters = mFilters;
+	}
+	public FileFilter(String[] mFilters, boolean showHidden) {
+		this.mFilters = mFilters;
+		this.showHidden = showHidden;
+	}
+	
+	public FileFilter(boolean showHidden) {
+		this.showHidden = showHidden;
+	}
+	
+	public FileFilter() {
+	}
+
+	
+	/**
+	 * Returns true if the given File object is an actual file. If file filters
+	 * are set in the constructor, files are filtered by them
 	 * 
 	 * @see java.io.FileFilter#accept(java.io.File)
 	 */
 	@Override
 	public boolean accept(File pathname) {
-		if (!pathname.isDirectory())
+		if (pathname.isDirectory())
 			return false;
 		if (!showHidden && pathname.getName().startsWith("."))
-				return false;
-		return true;
+			return false;
+		
+		if (mFilters != null) {
+			for (String ext : mFilters) {
+				if (pathname.getName().endsWith(ext)) {
+					return true;
+				}
+			}
+		} else {
+			return true;
+		}
+
+		return false;
 	}
 
 }

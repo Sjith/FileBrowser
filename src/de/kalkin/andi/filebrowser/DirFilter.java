@@ -1,4 +1,4 @@
-package org.moo.android.filebrowser;
+package de.kalkin.andi.filebrowser;
 
 /*
  * Copyright (c) 2009, Bahtiar `kalkin-` Gadimov
@@ -27,69 +27,39 @@ package org.moo.android.filebrowser;
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.io.File;
+import java.io.FileFilter;
 
 /**
- * Filters all Filter instances which are actual files
+ * Filters all File instances for directories
  * 
  * @author Bahtiar `kalkin-` Gadimov
  * 
  */
-public class FileFilter implements java.io.FileFilter {
+public class DirFilter implements FileFilter {
 
-	protected String[] mFilters = null;
-	
 	protected boolean showHidden = false;
 
-	
-
-
-	/**
-	 * Sets the string file filters to use
-	 * 
-	 * @param mFilters
-	 *            string file filters
-	 */
-	public FileFilter(String[] mFilters) {
-		this.mFilters = mFilters;
-	}
-	public FileFilter(String[] mFilters, boolean showHidden) {
-		this.mFilters = mFilters;
+	public DirFilter(boolean showHidden) {
 		this.showHidden = showHidden;
 	}
-	
-	public FileFilter(boolean showHidden) {
-		this.showHidden = showHidden;
-	}
-	
-	public FileFilter() {
+
+	public DirFilter() {
 	}
 
-	
 	/**
-	 * Returns true if the given File object is an actual file. If file filters
-	 * are set in the constructor, files are filtered by them
+	 * Returns only true if given File is a directory
 	 * 
 	 * @see java.io.FileFilter#accept(java.io.File)
 	 */
 	@Override
 	public boolean accept(File pathname) {
-		if (pathname.isDirectory())
+		if (!pathname.isDirectory())
 			return false;
 		if (!showHidden && pathname.getName().startsWith("."))
-			return false;
-		
-		if (mFilters != null) {
-			for (String ext : mFilters) {
-				if (pathname.getName().endsWith(ext)) {
-					return true;
-				}
-			}
-		} else {
-			return true;
-		}
-
-		return false;
+				return false;
+		return true;
 	}
 
 }

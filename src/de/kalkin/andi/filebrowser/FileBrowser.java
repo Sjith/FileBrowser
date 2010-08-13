@@ -1,4 +1,4 @@
-package org.moo.android.filebrowser;
+package de.kalkin.andi.filebrowser;
 
 /*
  * Copyright (c) 2009, Moo Productions

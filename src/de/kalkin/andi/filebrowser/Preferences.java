@@ -1,4 +1,4 @@
-package org.moo.android.filebrowser;
+package de.kalkin.andi.filebrowser;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
