@@ -142,12 +142,17 @@ public class DirectoryManager {
 	}
 
 	public void createDirectory(File parent, String name) {
-		Log.i("FileBrowser", "Creating " + parent.getAbsoluteFile() + "/"
-				+ name);
-		File newDir = new File(parent.getAbsoluteFile() + "/" + name);
+		File newDir = new File(parent.getAbsoluteFile(), name);
+		Log.i("FileBrowser", "Creating " + newDir.getAbsolutePath());
+		Log.i("FileBrowser", "Write rechte? " + newDir.canWrite());
 		if (!newDir.exists()) {
+			try {
 			boolean result = newDir.mkdir();
 			Log.i("FileBrowser", "" + result);
+			} catch (SecurityException e)
+			{
+				Log.w("FileBrowser", e.getMessage());
+			}
 		}
 	}
 
@@ -171,7 +176,6 @@ public class DirectoryManager {
 		switch (fileOperation) {
 		case copy:
 			Log.i("FileBrowser", "Copying file " + tmpFile.getName());
-			createDirectory(targetDir, tmpFile.getName());
 			copy(tmpFile, targetDir);
 			return;
 		case move:
@@ -187,10 +191,10 @@ public class DirectoryManager {
 	private void copy(File srcDir, File dstDir) throws IOException {
 		if (srcDir.isDirectory()) {
 
-			String[] children = srcDir.list();
+			File[] children = srcDir.listFiles();
 			for (int i = 0; i < children.length; i++) {
-				copy(new File(srcDir, children[i]), new File(srcDir,
-						children[i]));
+				copy(new File(srcDir, children[i].getName()), new File(srcDir,
+						children[i].getName()));
 			}
 		} else {
 			// This method is implemented in Copying a File
@@ -200,9 +204,9 @@ public class DirectoryManager {
 
 	private void copyFile(File src, File dst) throws IOException {
 		Log.i("FileBrowser", "copyFile src" + src);
-		Log.i("FileBrowser", "copyFile dst" + dst);
+		Log.i("FileBrowser", "copyFile dst" + new File(dst, src.getName()));
 		InputStream in = new FileInputStream(src);
-		OutputStream out = new FileOutputStream(dst);
+		OutputStream out = new FileOutputStream(new File(dst, src.getName()));
 
 		// Transfer bytes from in to out
 		byte[] buf = new byte[1024];
@@ -221,14 +225,12 @@ public class DirectoryManager {
 	public void delete(File file) {
 		if (file.isDirectory()) {
 			File[] children = file.listFiles();
-			if (children != null ) {
+			if (children != null) {
 				for (int i = 0; i < children.length; i++) {
 					delete(children[i]);
 				}
-
 			}
 		}
-		Log.i("FileBrowser", "Deleting file " + file.getAbsolutePath());
-		Log.i("FileBrowser", "Deleting wass successfull? " + file.delete());
+		file.delete();
 	}
 }
