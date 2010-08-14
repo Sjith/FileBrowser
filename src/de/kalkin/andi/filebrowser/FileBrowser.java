@@ -75,7 +75,7 @@ public class FileBrowser extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dirManager = new DirectoryManager();
+		dirManager = DirectoryManager.getInstance();
 		this.showHidden = PreferenceManager.getDefaultSharedPreferences(this)
 				.getBoolean("show_hidden", false);
 
@@ -101,7 +101,10 @@ public class FileBrowser extends Activity implements
 		if (intent.getData() == null)
 			browseTo(new File("/sdcard"));
 		else
-			browseTo(new File(intent.getDataString()));
+		{
+			Log.i("FileBrowser", "Intent: " + intent.getDataString());
+			browseTo(new File(intent.getDataString()));			
+		}
 
 		Display display = getWindowManager().getDefaultDisplay();
 
@@ -240,7 +243,11 @@ public class FileBrowser extends Activity implements
 		File file = mFiles.get((int) id);
 
 		if (file.isDirectory()) {
-			browseTo(file);
+			Intent intent = new Intent();
+			intent.setClassName("de.kalkin.andi.filebrowser", "de.kalkin.andi.filebrowser.FileBrowser");
+			intent.setData(Uri.fromFile(file));
+			startActivity(intent);
+//			browseTo(file);
 		} else {
 			if (!mStandAlone) {
 				// Send back the file that was selected

@@ -50,10 +50,20 @@ public class DirectoryManager {
 
 	protected boolean showHidden = false;
 
+	private static DirectoryManager instance = new DirectoryManager();
+
 	protected enum FileOperations {
 		move, copy
 	};
+	
+	
+	private DirectoryManager(){
+	}
 
+	public static DirectoryManager getInstance(){
+		return instance;
+	}
+	
 	protected FileOperations fileOperation;
 
 	/**
