@@ -3,12 +3,18 @@
 	<string name="show_hidden">Show hidden files</string>
 	<string name="preferences">Preferences</string>
 	<string name="app_name">FileBrowser</string>
-	
+
 	<string name="folder_add">Create Folder</string>
 	<string name="create">Create</string>
 	<string name="copy">Copy</string>
 	<string name="delete">Delete</string>
 	<string name="move">Move</string>
 	<string name="paste">Paste</string>
-<string name="sendto">Send to</string>
+	<string name="sendto">Send to</string>
+	<string name="info">Info</string>
+	<string name="name">Name:</string>
+	<string name="size">Size:</string>
+	<string name="permissions">Permissions</string>
+	<string name="mime">Mime-Type</string>
+	<string name="changed">Changed:</string>
 </resources>
