@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<TableRow android:layout_margin="10sp">
+		<TextView android:id="@+id/name" android:text="@string/name"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<TextView android:layout_marginLeft="5sp" android:id="@+id/nameValue"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	</TableRow>
+	<TableRow android:layout_margin="10sp">
+		<TextView android:id="@+id/size" android:text="@string/size"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<TextView android:layout_marginLeft="5sp" android:id="@+id/sizeValue"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	</TableRow>
+	<TableRow android:layout_margin="10sp">
+		<TextView android:id="@+id/changed" android:text="@string/changed"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<TextView android:layout_marginLeft="5sp" android:id="@+id/changedValue"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	</TableRow>
+</TableLayout>
