@@ -101,10 +101,9 @@ public class FileBrowser extends Activity implements
 
 		if (intent.getData() == null)
 			browseTo(new File(HOME_PATH));
-		else
-		{
+		else {
 			Log.i("FileBrowser", "Intent: " + intent.getDataString());
-			browseTo(new File(intent.getDataString().substring(5)));			
+			browseTo(new File(intent.getDataString().substring(5)));
 		}
 
 		Display display = getWindowManager().getDefaultDisplay();
@@ -242,14 +241,15 @@ public class FileBrowser extends Activity implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long id) {
 		File file = mFiles.get((int) id);
-		if(file.getAbsolutePath().equals(mCurrentDir.getParent()) && !mCurrentDir.getAbsolutePath().equals(HOME_PATH))
-		{
+		if (file.getAbsolutePath().equals(mCurrentDir.getParent())
+				&& !mCurrentDir.getAbsolutePath().equals(HOME_PATH)) {
 			finish();
 		}
 
 		if (file.isDirectory()) {
 			Intent intent = new Intent();
-			intent.setClassName("de.kalkin.andi.filebrowser", "de.kalkin.andi.filebrowser.FileBrowser");
+			intent.setClassName("de.kalkin.andi.filebrowser",
+					"de.kalkin.andi.filebrowser.FileBrowser");
 			intent.setData(Uri.fromFile(file));
 			startActivity(intent);
 		} else {
@@ -363,6 +363,14 @@ public class FileBrowser extends Activity implements
 			return true;
 		case R.id.copy:
 			dirManager.copyFile(new File(mCurrentDir, child));
+			return true;
+		case R.id.sendto:
+			File file = new File(mCurrentDir, child);
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.setType(getMimeType(file));
+			intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+			startActivity(Intent.createChooser(intent, null));
 			return true;
 		default:
 			return true;
