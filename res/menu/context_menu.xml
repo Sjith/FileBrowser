@@ -6,4 +6,5 @@
 		android:icon="@android:drawable/ic_menu_delete" />
 	<item android:id="@+id/move" android:title="@string/move"
 		android:icon="@drawable/cut" />
+<item android:id="@+id/sendto" android:title="@string/sendto"></item>
 </menu>
