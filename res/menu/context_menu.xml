@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/copy" android:title="@string/copy"
-		android:icon="@drawable/copy" />
+	<item android:id="@+id/info" android:title="@string/info"></item><item android:id="@+id/copy" android:title="@string/copy"
+		android:icon="@drawable/copy" ></item>
 	<item android:id="@+id/delete_dir" android:title="@string/delete"
-		android:icon="@android:drawable/ic_menu_delete" />
+		android:icon="@android:drawable/ic_menu_delete" ></item>
 	<item android:id="@+id/move" android:title="@string/move"
-		android:icon="@drawable/cut" />
+		android:icon="@drawable/cut" ></item>
 <item android:id="@+id/sendto" android:title="@string/sendto"></item>
+
 </menu>
