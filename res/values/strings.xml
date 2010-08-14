@@ -3,17 +3,12 @@
 	<string name="show_hidden">Show hidden files</string>
 	<string name="preferences">Preferences</string>
 	<string name="app_name">FileBrowser</string>
-	<string-array name="file_options">
-		<!--item>Rename</item-->
-		<item>Delete</item>
-		<!--item>Cut</item-->
-		<!--item>Copy</item-->
-		<item>Send To...</item>
-	</string-array>
+	
 	<string name="folder_add">Create Folder</string>
 	<string name="create">Create</string>
 	<string name="copy">Copy</string>
 	<string name="delete">Delete</string>
 	<string name="move">Move</string>
 	<string name="paste">Paste</string>
+<string name="sendto">Send to</string>
 </resources>
