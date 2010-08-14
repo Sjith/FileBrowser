@@ -31,6 +31,7 @@ package de.kalkin.andi.filebrowser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Currency;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -58,6 +59,7 @@ public class FileBrowser extends Activity implements
 	private GridView mGrid;
 	private File mCurrentDir;
 	private ArrayList<File> mFiles;
+	private final String HOME_PATH = "/sdcard";
 	private String[] mFilters;
 	private String[] mAudioExt;
 	private String[] mImageExt;
@@ -99,11 +101,11 @@ public class FileBrowser extends Activity implements
 		mFilters = intent.getStringArrayExtra("FileFilter");
 
 		if (intent.getData() == null)
-			browseTo(new File("/sdcard"));
+			browseTo(new File(HOME_PATH));
 		else
 		{
 			Log.i("FileBrowser", "Intent: " + intent.getDataString());
-			browseTo(new File(intent.getDataString()));			
+			browseTo(new File(intent.getDataString().substring(5)));			
 		}
 
 		Display display = getWindowManager().getDefaultDisplay();
@@ -124,7 +126,7 @@ public class FileBrowser extends Activity implements
 		this.showHidden = PreferenceManager.getDefaultSharedPreferences(this)
 				.getBoolean("show_hidden", false);
 		if (mCurrentDir == null)
-			browseTo(new File("/sdcard"));
+			browseTo(new File(HOME_PATH));
 		else
 			browseTo(mCurrentDir);
 
@@ -241,13 +243,16 @@ public class FileBrowser extends Activity implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long id) {
 		File file = mFiles.get((int) id);
+		if(file.getAbsolutePath().equals(mCurrentDir.getParent()) && !mCurrentDir.getAbsolutePath().equals(HOME_PATH))
+		{
+			finish();
+		}
 
 		if (file.isDirectory()) {
 			Intent intent = new Intent();
 			intent.setClassName("de.kalkin.andi.filebrowser", "de.kalkin.andi.filebrowser.FileBrowser");
 			intent.setData(Uri.fromFile(file));
 			startActivity(intent);
-//			browseTo(file);
 		} else {
 			if (!mStandAlone) {
 				// Send back the file that was selected
