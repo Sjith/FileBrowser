@@ -31,7 +31,6 @@ package de.kalkin.andi.filebrowser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Currency;
 
 import android.app.Activity;
 import android.app.Dialog;
