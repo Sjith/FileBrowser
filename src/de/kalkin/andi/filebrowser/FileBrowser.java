@@ -55,6 +55,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class FileBrowser extends Activity implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
+	private final int CREATE_FOLDER_DIALOG = 1;
+	private final int INFO_DIALOG = 2;
+	
 	private GridView mGrid;
 	private File mCurrentDir;
 	private ArrayList<File> mFiles;
@@ -71,7 +74,8 @@ public class FileBrowser extends Activity implements
 	private boolean mStandAlone;
 	private boolean showHidden;
 	private IconView mLastSelected;
-
+	private File infoFile;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,7 +135,15 @@ public class FileBrowser extends Activity implements
 	}
 
 	protected Dialog onCreateDialog(int dialogID) {
-		return new CreateFolderDialog(this, new OnReadyListener());
+		switch (dialogID) {
+		case CREATE_FOLDER_DIALOG:
+			return new CreateFolderDialog(this, new OnReadyListener());
+		case INFO_DIALOG:
+			return new InfoDialog(this, infoFile);
+		default:
+			return null;
+		}
+		
 	}
 
 	private synchronized void browseTo(final File location) {
@@ -372,6 +384,12 @@ public class FileBrowser extends Activity implements
 			intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 			startActivity(Intent.createChooser(intent, null));
 			return true;
+		case R.id.info:
+//			Bundle bundle = new Bundle();
+//			bundle.putString("file", new File(mCurrentDir, child).getAbsolutePath());
+			infoFile = new File(mCurrentDir, child);
+			showDialog(INFO_DIALOG);
+			return true;
 		default:
 			return true;
 		}
@@ -380,12 +398,13 @@ public class FileBrowser extends Activity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
+		Log.i("FileBrowser", "Title " + item.getTitle());
 		switch (item.getItemId()) {
 		case R.id.preferences:
 			startActivityIfNeeded(new Intent(this, Preferences.class), -1);
 			return true;
 		case R.id.folder_add:
-			showDialog(1);
+			showDialog(CREATE_FOLDER_DIALOG);
 			return true;
 		case R.id.paste:
 			try {
