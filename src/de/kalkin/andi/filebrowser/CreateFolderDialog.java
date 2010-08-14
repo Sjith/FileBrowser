@@ -10,31 +10,29 @@ import android.widget.EditText;
 
 public class CreateFolderDialog extends Dialog {
 
-	
-public CreateFolderDialog(Context context) {
+	public CreateFolderDialog(Context context) {
 		super(context);
 	}
 
-	public interface ReadyListener{
+	public interface ReadyListener {
 		public void ready(String dirname);
 	}
-	
+
 	protected ReadyListener readyListener;
-	
-	public CreateFolderDialog(Context context, ReadyListener readyListener)
-	{
+
+	public CreateFolderDialog(Context context, ReadyListener readyListener) {
 		super(context);
-		this.readyListener = readyListener; 
+		this.readyListener = readyListener;
 	}
 
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_LEFT_ICON);
-		setTitle(R.string .folder_add);
+		setTitle(R.string.folder_add);
 		setContentView(R.layout.create_folder);
-		setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, android.R.drawable.ic_menu_add);
+		setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
+				android.R.drawable.ic_menu_add);
 		Button create = (Button) findViewById(R.id.create_button);
-		
+
 		create.setOnClickListener(new OKListener());
 	}
 
@@ -47,5 +45,5 @@ public CreateFolderDialog(Context context) {
 			input.setText("");
 		}
 	}
-	
+
 }
